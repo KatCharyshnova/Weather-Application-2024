@@ -11,7 +11,7 @@ function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
   let city = searchInputElement.value;
-  let apiKey = "1a747f2d7ac32a100bt13fab8776o6ca";
+  let apiKey = `1a747f2d7ac32a100bt13fab8776o6ca`;
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showTemperature);
 }
