@@ -1,23 +1,34 @@
-function displayTemp(response) {
-  let temperatureElement = document.querySelector("#tempReading");
-  let temperature = Math.round(response.data.temperature.current);
+function showTemperature(response) {
   let cityElement = document.querySelector("#current-city");
-  cityElement.innerHTML = response.data.city;
-  temperatureElement.innerHTML = temperature;
+  let cityEntered = response.data.city;
+  let tempElement = document.querySelector(".current-temperature-value");
+  let temperature = Math.round(response.data.temperature.current);
+  tempElement.innerHTML = temperature;
+  cityElement.innerHTML = cityEntered;
 }
 
 function search(event) {
   event.preventDefault();
-  let searchInput = document.querySelector("#search-text-input");
-  let city = searchInput.value;
-  let apiKey = "dd9ad0073b1c71eoafbt4187fa1bef0d";
+  let searchInputElement = document.querySelector("#search-input");
+  let city = searchInputElement.value;
+  let apiKey = `1a747f2d7ac32a100bt13fab8776o6ca`;
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayTemp);
+  axios.get(apiUrl).then(showTemperature);
 }
 
-let now = new Date();
-
 function formatDate(date) {
+  let minutes = date.getMinutes();
+  let hours = date.getHours();
+  let day = date.getDay();
+
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+
   let days = [
     "Sunday",
     "Monday",
@@ -26,28 +37,15 @@ function formatDate(date) {
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ];
 
-  let currentDay = days[now.getDay()];
-  let currentHour = now.getHours();
-  let currentMinutes = now.getMinutes();
-
-  if (currentMinutes < 10) {
-    currentMinutes = `0${currentMinutes}`;
-  }
-
-  if (currentHour < 10) {
-    currentHour = `0${currentHours}`;
-  }
-
-  return `${currentDay} ${currentHour}:${currentMinutes}`;
+  let formattedDay = days[day];
+  return `${formattedDay} ${hours}:${minutes}`;
 }
+
+let searchForm = document.querySelector("#search-form");
+searchForm.addEventListener("submit", search);
 
 let currentDateElement = document.querySelector("#current-date");
 let currentDate = new Date();
-
 currentDateElement.innerHTML = formatDate(currentDate);
-
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", search);
